@@ -1,9 +1,38 @@
 const department = require("express").Router();
+const mysql = require("mysql2");
 
-// department.get("/", (req, res) => {
+function x(res) {
 
-//     res.send(db.query);
+    const pool = mysql.createPool({
 
-// });
+        connectionLimit: 10,
+        host: "localhost",
+        user: "root",
+        password: "root",
+        database: "employee_register_db",
+
+    },
+
+        console.log(`Pool opened`)
+
+    );
+
+    pool.query(`
+
+    SELECT * FROM department;
+
+    `, function (err, results) {
+
+        res.send(results);
+
+    });
+
+}
+
+department.get("/", (req, res) => {
+
+    x(res);
+
+});
 
 module.exports = department;
