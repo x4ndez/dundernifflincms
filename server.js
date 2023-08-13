@@ -16,13 +16,3 @@ server.listen(PORT, () => {
     console.log(`Server listening at port ${PORT}`);
 
 });
-
-async function inquirerProcess() {
-
-    let x = await inquirer.input("What do you like?");
-    let y = await fetch("localhost:3001/api/department")
-    console.log(x, y);
-
-}
-
-inquirerProcess();
