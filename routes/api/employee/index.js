@@ -1,27 +1,15 @@
 const employee = require("express").Router();
 const mysql = require("mysql2/promise");
+const connection = require("../../../db");
 
 async function getRoleAsId(role) {
 
-    const pool = await mysql.createConnection({
-
-        connectionLimit: 10,
-        host: "localhost",
-        user: "root",
-        password: "root",
-        database: "employee_register_db",
-
-    },
-
-        console.log(`Pool opened`)
-
-    );
-
-    let yyy = await pool.query(`
+    // SELECT id FROM role WHERE first_name = xxx
+    let yyy = await connection.promise().query(`
 
     SELECT * FROM role;
 
-    `)
+    `);
 
     for (let i = 0; i < yyy[0].length; i++) {
 
@@ -33,25 +21,11 @@ async function getRoleAsId(role) {
 
 async function getManagerId(manager) {
 
-    const pool = await mysql.createConnection({
-
-        connectionLimit: 10,
-        host: "localhost",
-        user: "root",
-        password: "root",
-        database: "employee_register_db",
-
-    },
-
-        console.log(`Pool opened`)
-
-    );
-
-    let yyy = await pool.query(`
+    let yyy = await connection.promise().query(`
 
     SELECT * FROM employee;
 
-    `)
+    `);
 
     let lol = manager.split(" ")
 
@@ -65,21 +39,7 @@ async function getManagerId(manager) {
 
 async function x(res) {
 
-    const pool = await mysql.createPool({
-
-        connectionLimit: 10,
-        host: "localhost",
-        user: "root",
-        password: "root",
-        database: "employee_register_db",
-
-    },
-
-        console.log(`Pool opened`)
-
-    );
-
-    const query = await pool.query(`
+    const query = await connection.promise().query(`
 
     SELECT * FROM employee;
 
@@ -104,31 +64,19 @@ employee.get("/", (req, res) => {
 
 employee.post("/", async (req, res) => {
 
-    const pool = await mysql.createPool({
 
-        connectionLimit: 10,
-        host: "localhost",
-        user: "root",
-        password: "root",
-        database: "employee_register_db",
-
-    },
-
-        console.log(`Pool opened`)
-
-    );
 
     const { firstName, lastName, employeeRole, employeeManager } = req.body;
     let roleId = await getRoleAsId(employeeRole);
     let managerId = await getManagerId(employeeManager);
 
-    const query = await pool.query(`
+    const query = connection.query(`
 
     INSERT INTO employee (first_name, last_name, role_id, manager_id)
     VALUES  ("${firstName}", "${lastName}", ${roleId}, ${managerId});
 
     `);
-    yyy[0][i].last_name
+    // yyy[0][i].last_name
     res.send("Employee added successfully!");
 
 });
