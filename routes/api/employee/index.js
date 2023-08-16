@@ -1,35 +1,17 @@
 const employee = require("express").Router();
-const mysql = require("mysql2/promise");
 const connection = require("../../../db");
 
 async function getRoleAsId(role) {
 
-    try {
-
-        const data = await connection.promise().query(`
+    const query = await connection.promise().query(`
 
     SELECT id FROM role WHERE title = "${role}";
 
     `);
 
-        return data[0][0].id;
-
-    } catch (err) {
-
-        console.log(new Error(err));
-
-    }
+    return query[0][0].id;
 
 }
-
-// async function yyz() {
-
-//     const l = await getManagerId("Alexander Nanfro");
-//     console.log(l);
-
-// }
-
-// yyz();
 
 async function getManagerId(manager) {
 
@@ -37,17 +19,17 @@ async function getManagerId(manager) {
     //nameArray[0] = first name
     //nameArray[1] = last name
 
-    const data = await connection.promise().query(`
+    const query = await connection.promise().query(`
 
     SELECT id FROM employee WHERE first_name = "${nameArray[0]}" AND last_name = "${nameArray[1]}";
 
     `);
 
-    return data[0][0].id;
+    return query[0][0].id;
 
 }
 
-async function x(res) {
+async function getEmployees() {
 
     const query = await connection.promise().query(`
 
@@ -55,26 +37,19 @@ async function x(res) {
 
     `)
 
-    res.send(query[0]);
+    return query[0];
 
 }
 
-employee.get("/", (req, res) => {
+// Get Employee list
+employee.get("/", async (req, res) => {
 
-    x(res);
+    res.json(await getEmployees());
 
 });
 
-// {
-//     firstName: 'x',
-//     lastName: 'x',
-//     employeeRole: 'Receptionist',
-//     employeeManager: 'Alexander Nanfro'
-//   }
-
+// Add employee to list
 employee.post("/", async (req, res) => {
-
-
 
     const { firstName, lastName, employeeRole, employeeManager } = req.body;
     let roleId = await getRoleAsId(employeeRole);
@@ -86,8 +61,8 @@ employee.post("/", async (req, res) => {
     VALUES  ("${firstName}", "${lastName}", ${roleId}, ${managerId});
 
     `);
-    // yyy[0][i].last_name
-    res.send("Employee added successfully!");
+
+    res.json("Employee added successfully!");
 
 });
 
