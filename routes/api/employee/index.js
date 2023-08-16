@@ -22,36 +22,28 @@ async function getRoleAsId(role) {
 
 }
 
-async function yyz() {
+// async function yyz() {
 
-    const l = await getRoleAsId("Regional Manager");
-    console.log(l);
+//     const l = await getManagerId("Alexander Nanfro");
+//     console.log(l);
 
-}
+// }
 
-yyz();
+// yyz();
 
 async function getManagerId(manager) {
 
+    const nameArray = manager.split(" ");
+    //nameArray[0] = first name
+    //nameArray[1] = last name
+
     const data = await connection.promise().query(`
 
-    SELECT * FROM employee;
+    SELECT id FROM employee WHERE first_name = "${nameArray[0]}" AND last_name = "${nameArray[1]}";
 
     `);
 
-    const nameArray = manager.split(" ");
-    const employeeData = data[0];
-
-    for (let i = 0; i < data[0].length; i++) {
-
-        if (nameArray[0] === employeeData[i].first_name && // If the first names are the same
-            nameArray[1] === employeeData[i].last_name) { // and the last names are the same
-
-            return employeeData[i].id; // Return the id of that employee
-
-        }
-
-    }
+    return data[0][0].id;
 
 }
 
