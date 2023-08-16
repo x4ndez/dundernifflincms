@@ -4,34 +4,52 @@ const connection = require("../../../db");
 
 async function getRoleAsId(role) {
 
-    // SELECT id FROM role WHERE first_name = xxx
-    let yyy = await connection.promise().query(`
+    try {
 
-    SELECT * FROM role;
+        const data = await connection.promise().query(`
+
+    SELECT id FROM role WHERE title = "${role}";
 
     `);
 
-    for (let i = 0; i < yyy[0].length; i++) {
+        return data[0][0].id;
 
-        if (role === yyy[0][i].title) return yyy[0][i].id;
+    } catch (err) {
+
+        console.log(new Error(err));
 
     }
 
 }
 
+async function yyz() {
+
+    const l = await getRoleAsId("Regional Manager");
+    console.log(l);
+
+}
+
+yyz();
+
 async function getManagerId(manager) {
 
-    let yyy = await connection.promise().query(`
+    const data = await connection.promise().query(`
 
     SELECT * FROM employee;
 
     `);
 
-    let lol = manager.split(" ")
+    const nameArray = manager.split(" ");
+    const employeeData = data[0];
 
-    for (let i = 0; i < yyy[0].length; i++) {
+    for (let i = 0; i < data[0].length; i++) {
 
-        if (lol[0] === yyy[0][i].first_name && lol[1] === yyy[0][i].last_name) return yyy[0][i].id;
+        if (nameArray[0] === employeeData[i].first_name && // If the first names are the same
+            nameArray[1] === employeeData[i].last_name) { // and the last names are the same
+
+            return employeeData[i].id; // Return the id of that employee
+
+        }
 
     }
 
