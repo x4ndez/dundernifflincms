@@ -1,6 +1,12 @@
 const inquirer = require("inquirer-promise");
 const fetch = require("node-fetch");
 
+const {
+
+    getManagerId
+
+} = require("./utils/common.js");
+
 async function getRequest(endpoint) {
 
     const res = await fetch(`http://localhost:3001/api/${endpoint}/`, { method: "GET" });
@@ -59,7 +65,7 @@ async function getDepartmentAsArray() {
 async function goToMainMenu() {
 
     const menuChoices = [
-        "View Employee Register", "View Job Roles", "View Departments",
+        "View Employee Register", "View Job Roles", "View Departments", "View Employees by Manager",
         "Add Employee", "Add Job Role", "Add Department", "Update Employee Manager", "Update Employee Role", "Quit"
     ];
 
@@ -91,6 +97,27 @@ async function goToMainMenu() {
         case "View Departments":
             console.clear();
             console.table(await getRequest("department"));
+            break;
+
+        case "View Employees by Manager":
+
+            const manager = await inquirer.prompt([
+
+                {
+                    type: "list",
+                    message: "Manager of the employees...",
+                    choices: await getEmployeesAsArray(),
+                    name: "employeeManager",
+                }
+
+            ]);
+
+            const managerName = await manager.employeeManager;
+            // console.log(manager);
+            const managerId = await getManagerId(managerName);
+
+            console.clear();
+            console.table(await getRequest(`employee/manager/${managerId}`));
             break;
 
         case "Add Employee":

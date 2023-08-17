@@ -18,3 +18,8 @@ VALUES ("", "", "");
 UPDATE employee
 SET role_id = ""
 WHERE id = "";
+
+-- GET LIST OF EMPLOYEES BY MANAGER
+SELECT *
+FROM employee
+WHERE manager_id = x;

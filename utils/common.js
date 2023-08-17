@@ -56,6 +56,20 @@ async function getTableData(tableName) {
 
 }
 
+async function getEmployeesByManager(tableName, managerId) {
+
+    const query = await connection.promise().query(`
+
+    SELECT *
+    FROM ${tableName}
+    WHERE manager_id = ${managerId};
+
+    `)
+
+    return query[0];
+
+}
+
 // Input an employee object, adds an employee to the database
 async function addEmployee(newEmployee) {
 
@@ -134,7 +148,9 @@ async function updateEmployeeManager(changeData) {
 
 module.exports = {
 
+    getManagerId,
     getTableData,
+    getEmployeesByManager,
     addEmployee,
     addDepartment,
     addRole,
