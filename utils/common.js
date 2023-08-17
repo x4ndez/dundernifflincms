@@ -13,6 +13,19 @@ async function getRoleAsId(role) {
 
 }
 
+// Input the department name, returns the department ID
+async function getDepartmentAsId(department) {
+
+    const query = await connection.promise().query(`
+
+    SELECT id FROM department WHERE name = "${department}";
+
+    `);
+
+    return query[0][0].id;
+
+}
+
 // Input the full employee name, returns the employee ID
 async function getManagerId(manager) {
 
@@ -59,6 +72,7 @@ async function addEmployee(newEmployee) {
 
 }
 
+// Input a department object, adds a department to the database
 async function addDepartment(newDepartment) {
 
     await connection.promise().query(`
@@ -70,10 +84,25 @@ VALUES ("${newDepartment.newDepartmentName}");
 
 }
 
+// Input an role object, adds a job role to the database
+async function addRole(newRole) {
+
+    const department_id = await getDepartmentAsId(newRole.newRoleDepartment);
+
+    await connection.promise().query(`
+
+INSERT INTO role (title, salary, department_id)
+VALUES ("${newRole.newRoleName}", "${newRole.newRoleSalary}", "${department_id}");
+
+`);
+
+}
+
 module.exports = {
 
     getTableData,
     addEmployee,
-    addDepartment
+    addDepartment,
+    addRole
 
 };

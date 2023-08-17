@@ -40,11 +40,27 @@ async function getEmployeesAsArray() {
 
 }
 
+async function getDepartmentAsArray() {
+
+    const departments = await getRequest("department");
+
+    let departmentsArray = [];
+
+    for (const item of await departments) {
+
+        departmentsArray.push(`${item.name}`);
+
+    }
+
+    return departmentsArray;
+
+}
+
 async function goToMainMenu() {
 
     const menuChoices = [
         "View Employee Register", "View Job Roles", "View Departments",
-        "Add Employee", "Add Job Role", "Add Department"
+        "Add Employee", "Add Job Role", "Add Department", "Update Employee Role"
     ];
 
     const mainMenu = await inquirer.prompt([
@@ -118,6 +134,40 @@ async function goToMainMenu() {
 
         case "Add Job Role":
 
+            const addRole = await inquirer.prompt([
+
+                {
+                    type: "input",
+                    message: "Name the new role...",
+                    name: "newRoleName",
+                },
+
+                {
+                    type: "input",
+                    message: "Salary of the new role...",
+                    name: "newRoleSalary",
+                },
+
+                {
+                    type: "list",
+                    message: "Choose a department to add this role...",
+                    choices: await getDepartmentAsArray(),
+                    name: "newRoleDepartment",
+                }
+
+            ]);
+
+            console.log(addRole);
+            const bodyRole = await addRole;
+
+            fetch("http://localhost:3001/api/role",
+                {
+                    method: "POST",
+                    body: JSON.stringify(bodyRole),
+                    headers: { "Content-Type": "application/json" }
+                });
+
+
             break;
 
         case "Add Department":
@@ -132,7 +182,6 @@ async function goToMainMenu() {
 
             );
 
-            console.log(addDepartment);
             const bodyDepartment = await addDepartment;
 
             fetch("http://localhost:3001/api/department",

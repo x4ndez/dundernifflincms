@@ -1,7 +1,8 @@
 const role = require("express").Router();
 const {
 
-    getTableData
+    getTableData,
+    addRole
 
 } = require("../../../utils/common.js");
 
@@ -9,6 +10,15 @@ const {
 role.get("/", async (req, res) => {
 
     res.json(await getTableData("role"));
+
+});
+
+// Add a job role
+role.post("/", async (req, res) => {
+
+    await addRole(req.body);
+
+    res.json("Role added successfully!");
 
 });
 

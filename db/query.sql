@@ -9,3 +9,7 @@ ORDER BY e.manager_id;
 -- ADD DEPARTMENT
 INSERT INTO department (name)
 VALUES ("");
+
+-- ADD ROLE
+INSERT INTO role (title, salary, department_id)
+VALUES ("", "", "");
