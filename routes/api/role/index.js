@@ -1,37 +1,14 @@
 const role = require("express").Router();
-const mysql = require("mysql2");
+const {
 
-function x(res) {
+    getTableData
 
-    const pool = mysql.createPool({
+} = require("../../../utils/common.js");
 
-        connectionLimit: 10,
-        host: "localhost",
-        user: "root",
-        password: "root",
-        database: "employee_register_db",
+// Get job role list
+role.get("/", async (req, res) => {
 
-    },
-
-        console.log(`Pool opened`)
-
-    );
-
-    pool.query(`
-
-    SELECT * FROM role;
-
-    `, function (err, results) {
-
-        res.send(results);
-
-    });
-
-}
-
-role.get("/", (req, res) => {
-
-    x(res);
+    res.json(await getTableData("role"));
 
 });
 
