@@ -80,8 +80,6 @@ async function goToMainMenu() {
 
     ]);
 
-    // const y = console.log(mainMenu.menuOption);
-
     switch (mainMenu.menuOption) {
 
         case "View Employee Register":
@@ -113,7 +111,6 @@ async function goToMainMenu() {
             ]);
 
             const managerName = await manager.employeeManager;
-            // console.log(manager);
             const managerId = await getManagerId(managerName);
 
             console.clear();
@@ -291,4 +288,6 @@ async function goToMainMenu() {
 
 }
 
+console.clear();
+console.log("Welcome to the Dunder Nifflin CMS!");
 goToMainMenu();

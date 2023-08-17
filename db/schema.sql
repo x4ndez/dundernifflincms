@@ -20,7 +20,6 @@ CREATE TABLE role (
     department_id INT(4),
 
     PRIMARY KEY(id),
-    UNIQUE(id),
     FOREIGN KEY (department_id)
     REFERENCES department(id)
 
@@ -35,7 +34,6 @@ CREATE TABLE employee (
     manager_id INT(4) NULL,
 
     PRIMARY KEY(id),
-    UNIQUE(id),
     FOREIGN KEY (role_id)
     REFERENCES role(id)
 
