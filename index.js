@@ -105,12 +105,12 @@ async function goToMainMenu() {
 
             ]);
 
-            const body = await addEmployee;
+            const bodyEmployee = await addEmployee;
 
             fetch("http://localhost:3001/api/employee",
                 {
                     method: "POST",
-                    body: JSON.stringify(body),
+                    body: JSON.stringify(bodyEmployee),
                     headers: { "Content-Type": "application/json" }
                 });
 
@@ -121,6 +121,26 @@ async function goToMainMenu() {
             break;
 
         case "Add Department":
+
+            const addDepartment = await inquirer.prompt(
+
+                {
+                    type: "input",
+                    message: "Name the new department...",
+                    name: "newDepartmentName",
+                }
+
+            );
+
+            console.log(addDepartment);
+            const bodyDepartment = await addDepartment;
+
+            fetch("http://localhost:3001/api/department",
+                {
+                    method: "POST",
+                    body: JSON.stringify(bodyDepartment),
+                    headers: { "Content-Type": "application/json" }
+                });
 
             break;
 

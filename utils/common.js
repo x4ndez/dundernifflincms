@@ -59,9 +59,21 @@ async function addEmployee(newEmployee) {
 
 }
 
+async function addDepartment(newDepartment) {
+
+    await connection.promise().query(`
+
+INSERT INTO department (name)
+VALUES ("${newDepartment.newDepartmentName}");
+
+`);
+
+}
+
 module.exports = {
 
     getTableData,
-    addEmployee
+    addEmployee,
+    addDepartment
 
 };
