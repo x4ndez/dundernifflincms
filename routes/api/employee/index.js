@@ -2,7 +2,8 @@ const employee = require("express").Router();
 const {
 
     getTableData,
-    addEmployee
+    addEmployee,
+    updateEmployeeRole
 
 } = require("../../../utils/common.js");
 
@@ -22,5 +23,17 @@ employee.post("/", async (req, res) => {
 
 });
 
+// Update role of the employee
+employee.put("/", (req, res) => {
+
+    // which employee?
+    // change to which role?
+    //send
+
+    updateEmployeeRole(req.body);
+
+    res.json(req.body);
+
+});
 
 module.exports = employee;

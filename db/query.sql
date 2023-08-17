@@ -13,3 +13,8 @@ VALUES ("");
 -- ADD ROLE
 INSERT INTO role (title, salary, department_id)
 VALUES ("", "", "");
+
+-- UPDATE ROLE
+UPDATE employee
+SET role_id = ""
+WHERE id = "";

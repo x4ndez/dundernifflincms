@@ -58,9 +58,13 @@ async function getDepartmentAsArray() {
 
 async function goToMainMenu() {
 
+    const l2menuChoices = [
+        "View", "Add", "Update"
+    ]
+
     const menuChoices = [
         "View Employee Register", "View Job Roles", "View Departments",
-        "Add Employee", "Add Job Role", "Add Department", "Update Employee Role"
+        "Add Employee", "Add Job Role", "Add Department", "Update Employee Role", "Quit"
     ];
 
     const mainMenu = await inquirer.prompt([
@@ -79,15 +83,15 @@ async function goToMainMenu() {
     switch (mainMenu.menuOption) {
 
         case "View Employee Register":
-            console.log(await getRequest("employee"));
+            console.table(await getRequest("employee"));
             break;
 
         case "View Job Roles":
-            console.log(await getRequest("role"));
+            console.table(await getRequest("role"));
             break;
 
         case "View Departments":
-            console.log(await getRequest("department"));
+            console.table(await getRequest("department"));
             break;
 
         case "Add Employee":
@@ -193,7 +197,41 @@ async function goToMainMenu() {
 
             break;
 
+        case "Update Employee Role":
+            const updateEmployeeRole = await inquirer.prompt([
+
+                {
+                    type: "list",
+                    message: "Which employee would you like to update?",
+                    choices: await getEmployeesAsArray(),
+                    name: "employeeName",
+                },
+
+                {
+                    type: "list",
+                    message: "Change the role of the employee to which role?",
+                    choices: await getRoleAsArray(),
+                    name: "changeToRole",
+                }
+
+            ]);
+
+            const bodyRoleUpdate = await updateEmployeeRole;
+
+            fetch("http://localhost:3001/api/employee",
+                {
+                    method: "PUT",
+                    body: JSON.stringify(bodyRoleUpdate),
+                    headers: { "Content-Type": "application/json" }
+                });
+
+            break;
+
+        case "Quit":
+            return;
     }
+
+    goToMainMenu();
 
 }
 
