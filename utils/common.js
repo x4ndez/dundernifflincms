@@ -115,12 +115,30 @@ async function updateEmployeeRole(changeData) {
 
 }
 
+async function updateEmployeeManager(changeData) {
+
+    const { employeeName, changeToManager } = changeData;
+
+    const employeeId = await getManagerId(employeeName);
+    const newManager = await getManagerId(changeToManager);
+
+    connection.promise().query(`
+
+    UPDATE employee
+    SET manager_id = ${newManager}
+    WHERE id = ${employeeId};
+
+    `);
+
+}
+
 module.exports = {
 
     getTableData,
     addEmployee,
     addDepartment,
     addRole,
-    updateEmployeeRole
+    updateEmployeeRole,
+    updateEmployeeManager
 
 };

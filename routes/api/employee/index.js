@@ -3,7 +3,8 @@ const {
 
     getTableData,
     addEmployee,
-    updateEmployeeRole
+    updateEmployeeRole,
+    updateEmployeeManager
 
 } = require("../../../utils/common.js");
 
@@ -26,11 +27,16 @@ employee.post("/", async (req, res) => {
 // Update role of the employee
 employee.put("/", (req, res) => {
 
-    // which employee?
-    // change to which role?
-    //send
-
     updateEmployeeRole(req.body);
+
+    res.json(req.body);
+
+});
+
+// Update role of the employee
+employee.put("/manager", (req, res) => {
+
+    updateEmployeeManager(req.body);
 
     res.json(req.body);
 

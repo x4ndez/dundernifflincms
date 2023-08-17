@@ -58,13 +58,9 @@ async function getDepartmentAsArray() {
 
 async function goToMainMenu() {
 
-    const l2menuChoices = [
-        "View", "Add", "Update"
-    ]
-
     const menuChoices = [
         "View Employee Register", "View Job Roles", "View Departments",
-        "Add Employee", "Add Job Role", "Add Department", "Update Employee Role", "Quit"
+        "Add Employee", "Add Job Role", "Add Department", "Update Employee Manager", "Update Employee Role", "Quit"
     ];
 
     const mainMenu = await inquirer.prompt([
@@ -78,19 +74,22 @@ async function goToMainMenu() {
 
     ]);
 
-    const y = console.log(mainMenu.menuOption);
+    // const y = console.log(mainMenu.menuOption);
 
     switch (mainMenu.menuOption) {
 
         case "View Employee Register":
+            console.clear();
             console.table(await getRequest("employee"));
             break;
 
         case "View Job Roles":
+            console.clear();
             console.table(await getRequest("role"));
             break;
 
         case "View Departments":
+            console.clear();
             console.table(await getRequest("department"));
             break;
 
@@ -222,6 +221,36 @@ async function goToMainMenu() {
                 {
                     method: "PUT",
                     body: JSON.stringify(bodyRoleUpdate),
+                    headers: { "Content-Type": "application/json" }
+                });
+
+            break;
+
+        case "Update Employee Manager":
+            const updateEmployeeManager = await inquirer.prompt([
+
+                {
+                    type: "list",
+                    message: "Which employee would you like to update?",
+                    choices: await getEmployeesAsArray(),
+                    name: "employeeName",
+                },
+
+                {
+                    type: "list",
+                    message: "Choose the new manager of the employee...",
+                    choices: await getEmployeesAsArray(),
+                    name: "changeToManager",
+                }
+
+            ]);
+
+            const bodyManagerUpdate = await updateEmployeeManager;
+
+            fetch("http://localhost:3001/api/employee/manager",
+                {
+                    method: "PUT",
+                    body: JSON.stringify(bodyManagerUpdate),
                     headers: { "Content-Type": "application/json" }
                 });
 
