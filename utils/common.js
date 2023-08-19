@@ -48,7 +48,40 @@ async function getTableData(tableName) {
 
     const query = await connection.promise().query(`
 
-    SELECT * FROM ${tableName};
+    SELECT * from ${tableName};
+
+    `)
+
+    return query[0];
+
+}
+
+// Input the table name: department, role, employee, returns all data from that table.
+async function getEmployees() {
+
+    const query = await connection.promise().query(`
+
+    SELECT e.id, e.first_name, e.last_name, r.title, r.salary, d.name AS department_name, CONCAT(m.first_name, " ", m.last_name) AS manager
+    FROM employee e
+    LEFT JOIN employee m ON e.manager_id = m.id
+    JOIN role r ON r.id = e.role_id
+    JOIN department d ON d.id = r.department_id
+    ORDER BY title;
+
+    `)
+
+    return query[0];
+
+}
+
+async function getRoles() {
+    // job title, role id, the department that role belongs to, and the salary for that role
+    const query = await connection.promise().query(`
+
+    SELECT r.id, r.title, r.salary, d.name AS department_name
+    FROM role r
+    JOIN department d
+    ON r.department_id = d.id;
 
     `)
 
@@ -150,6 +183,8 @@ module.exports = {
 
     getManagerId,
     getTableData,
+    getEmployees,
+    getRoles,
     getEmployeesByManager,
     addEmployee,
     addDepartment,

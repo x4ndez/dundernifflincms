@@ -1,7 +1,7 @@
 const role = require("express").Router();
 const {
 
-    getTableData,
+    getRoles,
     addRole
 
 } = require("../../../utils/common.js");
@@ -9,7 +9,7 @@ const {
 // Get job role list
 role.get("/", async (req, res) => {
 
-    res.json(await getTableData("role"));
+    res.json(await getRoles());
 
 });
 

@@ -1,7 +1,7 @@
 const employee = require("express").Router();
 const {
 
-    getTableData,
+    getEmployees,
     getEmployeesByManager,
     addEmployee,
     updateEmployeeRole,
@@ -12,7 +12,7 @@ const {
 // Get Employee list
 employee.get("/", async (req, res) => {
 
-    res.json(await getTableData("employee"));
+    res.json(await getEmployees());
 
 });
 

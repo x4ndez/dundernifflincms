@@ -41,3 +41,10 @@ WHERE id = x;
 -- but I think for this application, changing an employee role first would be safer.
 DELETE FROM role
 WHERE id = x;
+
+-- a formatted table showing employee data, including
+-- employee ids, first names, last names, job titles, departments, salaries, and managers that the employees report to
+SELECT e.id, e.first_name, e.last_name, r.title, r.salary, d.name AS department_name
+FROM ((employee e
+JOIN role r ON e.role_id = r.id)
+JOIN department d ON r.department_id = d.id);
